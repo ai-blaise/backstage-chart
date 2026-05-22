@@ -1,0 +1,48 @@
+name: publish-chart
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.15.4
+
+      - name: Helm registry login (ghcr.io)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | helm registry login ghcr.io \
+                --username "${{ github.actor }}" \
+                --password-stdin
+
+      - name: Helm dependency update
+        run: helm dependency update .
+
+      - name: Helm lint
+        run: helm lint .
+
+      - name: Helm package
+        id: package
+        run: |
+          mkdir -p dist
+          helm package . --destination dist
+          pkg=$(ls dist/*.tgz | head -1)
+          echo "pkg=${pkg}" >> "$GITHUB_OUTPUT"
+
+      - name: Helm push to oci://ghcr.io/ai-blaise/charts
+        run: |
+          helm push "${{ steps.package.outputs.pkg }}" \
+            oci://ghcr.io/ai-blaise/charts

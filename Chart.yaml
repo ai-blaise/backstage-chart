@@ -1,0 +1,46 @@
+annotations:
+  artifacthub.io/category: integration-delivery
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/links: |
+    - name: support
+      url: https://github.com/ai-blaise/backstage-chart/issues
+    - name: Chart Source
+      url: https://github.com/ai-blaise/backstage-chart
+    - name: Upstream Chart Source
+      url: https://github.com/backstage/charts
+    - name: Default Image Source
+      url: https://github.com/ai-blaise/backstage
+apiVersion: v2
+description: A Helm chart for deploying the ai-blaise command-center Backstage fork
+dependencies:
+  - name: common
+    repository: oci://registry-1.docker.io/bitnamicharts
+    tags:
+      - bitnami-common
+    version: 2.10.0
+  - condition: postgresql.enabled
+    name: postgresql
+    repository: oci://registry-1.docker.io/bitnamicharts
+    version: 12.10.0
+home: https://github.com/ai-blaise/backstage-chart
+icon: https://raw.githubusercontent.com/cncf/artwork/master/projects/backstage/icon/color/backstage-icon-color.svg
+keywords:
+  - backstage
+  - idp
+  - ai-blaise
+  - command-center
+kubeVersion: ">= 1.19.0-0"
+maintainers:
+  - name: ai-blaise
+    url: https://github.com/ai-blaise
+name: backstage
+type: application
+sources:
+  - https://github.com/ai-blaise/backstage-chart
+  - https://github.com/ai-blaise/backstage
+  - https://github.com/backstage/charts
+
+# Versioned as <upstream-ver>-cc.N where N is the command-center revision.
+# Upstream backstage/charts version is 2.7.0; bump cc.N for fork-only edits.
+version: 2.7.0-cc.1
+appVersion: 2.7.0-cc.1
