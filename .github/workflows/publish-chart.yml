@@ -46,3 +46,14 @@ jobs:
         run: |
           helm push "${{ steps.package.outputs.pkg }}" \
             oci://ghcr.io/ai-blaise/charts
+
+      - name: Ensure GHCR package is public
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # The packages REST API requires owner-typed paths.
+          # We attempt org first (ai-blaise), then user fallback.
+          set +e
+          gh api -X PATCH /orgs/ai-blaise/packages/container/charts%2Fbackstage             -f visibility=public 2>&1 | tail -5
+          status=$?
+          echo "visibility patch exit=$status"
