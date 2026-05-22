@@ -122,10 +122,10 @@ backstage:
   image:
 
     # -- Backstage image registry
-    registry: ghcr.io
+    registry: ""
 
     # -- Backstage image repository
-    repository: ai-blaise/backstage
+    repository: ghcr.io/ai-blaise/backstage
 
     # -- Backstage image tag (immutable tags are recommended)
     tag: latest
