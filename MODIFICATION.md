@@ -18,11 +18,10 @@ Tracks every intentional divergence between this fork and upstream
   an `Upstream Chart Source` link for traceability.
 
 ### `values.yaml`
-- `backstage.image.repository`: `backstage/backstage` -> `ghcr.io/ai-blaise/backstage`
-  (full path; the default `registry` is blanked to avoid double-prefix
-  when the bitnami `common.images.image` helper concatenates them).
-- `backstage.image.registry`: `ghcr.io` -> `` (empty) so the
-  full `repository` path is used as-is.
+- `backstage.image.repository`: `backstage/backstage` -> `ai-blaise/backstage`
+  (registry unchanged at `ghcr.io`; together they yield
+  `ghcr.io/ai-blaise/backstage`, the command-center image, via the
+  bitnami `common.images.image` helper).
 - Everything else: held at upstream defaults — overlays live in the
   consumer (`gitops/.../values.yaml` on `ai-blaise/command-center`).
 
